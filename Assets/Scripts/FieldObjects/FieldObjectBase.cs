@@ -65,7 +65,7 @@ namespace ClashTheCube
 
         protected void Update()
         {
-            UpdateDirectionLine();
+            PredictTrajectory();
 
             if (State != FieldObjectState.Initial)
             {
@@ -146,7 +146,7 @@ namespace ClashTheCube
                 DirectionLine.endColor = newCol;
         }
 
-        private void UpdateDirectionLine()
+        public void UpdateDirectionLine()
         {
             var active = State == FieldObjectState.Initial;
 
@@ -155,8 +155,6 @@ namespace ClashTheCube
                 directionLine.SetActive(active);
                 hitMarker.gameObject.SetActive(active);
             }
-
-            PredictTrajectory();
         }
 
         private void PredictTrajectory()

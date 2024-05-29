@@ -35,8 +35,8 @@ namespace ClashTheCube
 
         private int identifier;
         private int redLineCrossCount;
-        private bool redLineHitActive;
         private bool isOnPlate;
+        private bool isEliminated;
         private static readonly int TintColorA = Shader.PropertyToID("_TintColorA");
 
         private IMetaSerializable serializer;
@@ -61,6 +61,7 @@ namespace ClashTheCube
 
             identifier = GetInstanceID();
             isOnPlate = false;
+            isEliminated = false;
         }
 
         private void Start()
@@ -92,10 +93,7 @@ namespace ClashTheCube
             }
 
             isOnPlate = true;
-
             redLineCrossCount++;
-
-            CheckRedLine();
         }
 
         private void OnTriggerExit(Collider collider)
@@ -107,10 +105,7 @@ namespace ClashTheCube
             }
 
             isOnPlate = false;
-
             redLineCrossCount++;
-
-            CheckRedLine();
         }
 
         private bool CheckSleepingChanged()
@@ -129,9 +124,11 @@ namespace ClashTheCube
         {
             if (redLineCrossCount <= 1 && (!sleeping || isOnPlate)) return;
 
-        
-            if (sleeping && !isOnPlate)
+            else if (isEliminated) return;
+
+            else if (sleeping && !isOnPlate)
             {
+                isEliminated = true;
                 cubeCrossedRedLineEvent.Raise();
             }
         }
